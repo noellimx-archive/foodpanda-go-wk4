@@ -27,7 +27,7 @@ func Run(wantFail bool) (int, *Block, int) {
 	defer func() {
 
 		if r := recover(); r != nil {
-			log.Printf("[recover] ") // d1 d2 d3 d4 dR d6 d7
+			log.Printf("[recover] defer() that are defined after a recover will not be invoked") // d1 d2 d3 d4 dR d6 d7
 		}
 	}()
 	i := 10
