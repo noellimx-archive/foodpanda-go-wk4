@@ -45,7 +45,6 @@ func IdiomaticHandling2() {
 		log.Printf("[IdiomaticHandling2] %s", err.Error())
 
 	}
-
 }
 
 func Run() {
