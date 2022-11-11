@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"foodpandagowk4/errhand"
 	"foodpandagowk4/panichand"
 	"log"
@@ -10,18 +9,40 @@ import (
 func main() {
 
 	errhand.Run()
-	i, block1, block1FlagOld := panichand.Run()
+
+	wantFail := false
+	i, block1, block1FlagOld := panichand.Run(wantFail)
 
 	if i != 0 {
-		log.Panic(fmt.Sprintf("[panichand returns] hmm please check design.  %d", i))
-	}
-
-	if block1.Flag != 1 {
-		log.Panic(fmt.Sprintf("[panichand returns] hmm please check design on block1.  %d", i))
-
+		log.Panicf("[panichand returns] hmm please check design.  %d", i)
 	}
 
 	if block1FlagOld != 0 {
-		log.Panic(fmt.Sprintf("[panichand returns] hmm please check design on block1.  %d", block1FlagOld))
+		log.Panicf("[panichand returns] hmm please check design on block1.  %d", block1FlagOld)
+	}
+
+	if block1 == nil {
+		log.Panicf("[panichand returns] hmm please check design on block1.")
+
+	}
+
+	if block1.Flag != 1 {
+		log.Panicf("[panichand returns] hmm please check design on block1.  %d", block1.Flag)
+	}
+
+	wantFail = true
+	i, block1, block1FlagOld = panichand.Run(wantFail)
+
+	if i != 0 {
+		log.Panicf("[panichand returns] hmm please check design.  %d", i)
+	}
+
+	if block1FlagOld != 0 {
+		log.Panicf("[panichand returns] hmm please check design on block1.  %d", block1FlagOld)
+	}
+
+	if block1 != nil {
+		log.Panicf("[panichand returns] hmm please check design on block1.")
+
 	}
 }

@@ -17,19 +17,35 @@ type Block struct {
 	Flag int
 }
 
-func Run() (int, *Block, int) {
+func Run(wantFail bool) (int, *Block, int) {
+
+	var block1 *Block = &Block{}
+	state := 0
+
 	defer defereable("beta")
 
+	defer func() {
+
+		if r := recover(); r != nil {
+
+			log.Printf("[recover]")
+		}
+	}()
 	i := 10
-	for i > 1 {
+
+	var inferior int
+
+	if wantFail {
+		inferior = 0
+
+	} else {
+		inferior = 1
+	}
+	for i > inferior {
 
 		i -= 1
 		Divide(10-i, i)
 	}
-
-	state := 0
-
-	var block1 *Block = &Block{}
 
 	defer func() {
 		log.Printf("[inline-defer state init] primitive: %d pointer val: %d %p", state, block1.Flag, block1)
@@ -41,7 +57,6 @@ func Run() (int, *Block, int) {
 
 	defer func() {
 		log.Printf("[inline-defer state after] primitive: %d pointer val: %d %p", state, block1.Flag, block1)
-
 	}()
 
 	defer defereable("omega")
